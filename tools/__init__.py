@@ -1,14 +1,14 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import aux_functions._printing as printing
-import aux_functions._content as content
-import aux_functions._feature_extraction as feature_extraction
-import aux_functions._file_io as file_io
-import aux_functions._metrics as metrics
-import aux_functions._modules_functions as modules_functions
-import aux_functions._experiments_processes as experiments_processes
-import aux_functions._argument_parsing as argument_parsing
+import tools._printing as printing
+import tools._content as content
+import tools._feature_extraction as feature_extraction
+import tools._file_io as file_io
+import tools._metrics as metrics
+import tools._modules_functions as modules_functions
+import tools._experiments_processes as experiments_processes
+import tools._argument_parsing as argument_parsing
 
 __author__ = 'Konstantinos Drossos -- TUT'
 __docformat__ = 'reStructuredText'
