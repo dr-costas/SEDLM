@@ -1,12 +1,11 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
 from contextlib import ContextDecorator
 from datetime import datetime
-from collections import namedtuple, Iterable
+from collections import namedtuple
 
-__author__ = 'Konstantinos Drossos -- TUT'
+__author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
 __all__ = [
     'print_msg', 'inform_about_device', 'print_date_and_time',

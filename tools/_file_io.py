@@ -9,7 +9,7 @@ import yaml
 import numpy as np
 from librosa import load
 
-__author__ = 'Konstantinos Drossos -- TUT'
+__author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
 __all__ = [
     'dump_pickle_file', 'load_pickle_file', 'read_txt_file',

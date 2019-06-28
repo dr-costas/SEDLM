@@ -3,7 +3,7 @@
 
 from argparse import ArgumentParser
 
-__author__ = 'Konstantinos Drossos'
+__author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
 __all__ = ['get_argument_parser']
 

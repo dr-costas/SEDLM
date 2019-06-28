@@ -4,7 +4,7 @@
 import numpy as np
 import librosa
 
-__author__ = 'Konstantinos Drossos -- TUT'
+__author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
 __all__ = ['stft', 'mel_band_energies']
 

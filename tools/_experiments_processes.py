@@ -10,10 +10,10 @@ from torch.optim import Adam
 from torch.nn import BCEWithLogitsLoss, utils
 from torch import cuda
 
-from aux_functions import metrics, printing
+from tools import metrics, printing
 from data_feeders import get_tut_sed_data_loader
 
-__author__ = 'Konstantinos Drossos'
+__author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
 __all__ = ['training', 'testing']
 

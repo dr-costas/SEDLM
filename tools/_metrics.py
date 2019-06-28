@@ -5,7 +5,7 @@ import torch
 
 from sklearn.metrics import accuracy_score
 
-__author__ = 'Konstantinos Drossos'
+__author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
 __all__ = [
     'accuracy',

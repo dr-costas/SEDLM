@@ -5,7 +5,7 @@ from os import path
 
 import torch
 
-__author__ = 'Konstantinos Drossos'
+__author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
 __all__ = ['save_model_state', 'load_model_state']
 
