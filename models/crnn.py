@@ -51,7 +51,7 @@ class CRNN(Module):
         features = features.view(b_size, t_steps, self.dnn_output_features)
 
         h = zeros(self.rnn_hh_size).to(x.device)
-        outputs = zeros(b_size, t_steps, self.nb_classes)
+        outputs = zeros(b_size, t_steps, self.nb_classes).to(features.device)
 
         for t_step in range(t_steps):
             h = self.rnn(features[:, t_step, :], h)
