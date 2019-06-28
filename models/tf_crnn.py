@@ -59,7 +59,7 @@ class TFCRNN(Module):
 
     @property
     def min_prob(self):
-        return self._min_prob
+        return 1 + self._min_prob
 
     @min_prob.setter
     def min_prob(self, value):
