@@ -63,10 +63,21 @@ class TFCRNN(Module):
 
     @property
     def min_prob(self):
-        return 1 + self._min_prob
+        """Getter for the min_prob attribute.
+
+        :return: The minimum probability for\
+                 selecting predictions.
+        :rtype: float
+        """
+        return 1 - self._min_prob
 
     @min_prob.setter
     def min_prob(self, value):
+        """Setter for the min_prob attribute.
+
+        :param value: The new value of the min_prob.
+        :type value: float
+        """
         self._min_prob = 1 - value
 
     def forward(self, x, y):
@@ -117,6 +128,10 @@ class TFCRNN(Module):
     def scheduled_sampling(self):
         """Returns the probability to select
         the predicted value.
+
+        :return: The current probability of\
+                 selecting predictions.
+        :rtype: torch.Tensor
         """
         p = self.iteration/(self.batch_counter * self.mul_factor)
         d = Tensor([-self.gamma_factor * p]).exp().item()
