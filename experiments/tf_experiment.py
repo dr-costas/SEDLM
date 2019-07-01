@@ -3,7 +3,7 @@
 
 from functools import partial
 
-from models.tf_crnn import TFCRNN
+from models import TFCRNN
 from tools.printing import print_msg, print_date_and_time
 from tools.various import CheckAllNone, get_argument_parser
 from tools.file_io import load_settings_file

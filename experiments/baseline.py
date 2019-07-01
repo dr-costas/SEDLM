@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from models.crnn import CRNN
+from models import CRNN
 from tools.printing import print_msg, print_date_and_time
 from tools.various import get_argument_parser, CheckAllNone
 from tools.file_io import load_settings_file
