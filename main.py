@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from tools.printing import print_date_and_time, print_yaml_settings
-from tools.argument_parsing import get_argument_parser
+from tools.various import get_argument_parser
 from tools.file_io import load_settings_file
 from experiments.tf_experiment import do_process as tf_process
 from experiments.baseline import do_process as baseline
