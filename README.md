@@ -29,8 +29,8 @@ To start using our project, you have to:
 Probably using other Python 3.X versions will be OK, but please have in mind that this code
 is for Python 3.6. 
 
-2. Set-p the dependencies using either the ``pip`` ([pip_dependencies.txt](pip_dependencies.txt))
-or ``conda`` ([conda_dependencies.txt](conda_dependencies.txt)) files. 
+2. Set-p the dependencies using either the ``pip`` ([pip_requirements.txt](pip_requirements.txt))
+or ``conda`` ([conda_requirements.txt](conda_requirements.txt)) files. 
 
 3. Download the audio data. You can download the three audio datasets from: 
 
