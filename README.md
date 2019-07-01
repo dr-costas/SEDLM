@@ -1,6 +1,7 @@
 # Language Modeling for Sound Event Detection with Teacher Forcing and Scheduled Sampling 
 ***
 ### Welcome to the repository of the SEDLM method. 
+
 This is the repository for the method presented in the paper 
 "Language Modeling for Sound Event Detection with Teacher Forcing and Scheduled Sampling", by 
 [K. Drossos](https://tutcris.tut.fi/portal/en/persons/konstantinos-drosos(b1070370-5156-4280-b354-6291618bb965).html), 
