@@ -12,8 +12,8 @@ data_loader:
   shuffle: Yes
   drop_last: Yes
   root_dir: 'dataset'
-  scene:  # Not used in the TUT SED Real Life 2017 dataset
-  data_fold:  # Is set dynamically in the experiments
+  scene:  # Not used in this dataset
+  data_fold:  # Not used in this dataset
   data_version: 'synthetic'
 #
 # Settings for the optimizer
