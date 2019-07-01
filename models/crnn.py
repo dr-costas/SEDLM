@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 from torch import zeros
-from torch.nn import Module, GRUCell, Linear
+from torch.nn import Module, Sequential, GRUCell, \
+    Linear, Dropout
 
 from modules import dnn
 
@@ -13,8 +14,8 @@ __all__ = ['CRNN']
 
 class CRNN(Module):
 
-    def __init__(self, cnn_channels, cnn_dropout,
-                 rnn_in_dim, rnn_out_dim, nb_classes):
+    def __init__(self, cnn_channels, cnn_dropout, rnn_in_dim,
+                 rnn_out_dim, rnn_dropout, nb_classes):
         """The CRNN model.
 
         :param cnn_channels: The amount of CNN channels.
@@ -25,6 +26,8 @@ class CRNN(Module):
         :type rnn_in_dim: int
         :param rnn_out_dim: The output dimensionality of the RNN.
         :type rnn_out_dim: int
+        :param rnn_dropout: The dropout to be applied to the RNN.
+        :type rnn_dropout: float
         :param nb_classes: The amount of classes to be predicted.
         :type nb_classes: int
         """
@@ -35,7 +38,10 @@ class CRNN(Module):
         self.nb_classes = nb_classes
 
         self.dnn = dnn.DNN(cnn_channels=cnn_channels, cnn_dropout=cnn_dropout)
-        self.rnn = GRUCell(rnn_in_dim, self.rnn_hh_size, bias=True)
+        self.rnn = Sequential(
+            Dropout(rnn_dropout),
+            GRUCell(rnn_in_dim, self.rnn_hh_size, bias=True)
+        )
         self.classifier = Linear(self.rnn_hh_size, self.nb_classes, bias=True)
 
     def forward(self, x):
