@@ -15,7 +15,7 @@ data_loader:
   scene:  # Not used in the TUT SED Real Life 2017 dataset
   normalized_features: Yes
   tutsed_features: Yes
-  data_fold: 1
+  data_fold:  # Not used in the TUT SED Real Life 2017 dataset
   data_version: 2017
 #
 # Settings for the optimizer
