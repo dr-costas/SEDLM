@@ -19,9 +19,14 @@ You can find an online version of our paper at arXiv:
 ## Table of Contents
 
 1. [Method introduction](#method-introduction)
+    1. [Sound event detection](#sound-event-detection)
+    2. [Teacher forcing and scheduled sampling](#teacher-forcing-and-scheduled-sampling)
 2. [Dependencies, pre-requisites,
 and setting up the project](#dependencies-pre-requisites-and-setting-up-the-project)
 3. [Using SEDLM](#using-sedlm)
+    1. [Data set-up](#data-set-up)
+    2. [Hyper-parameters tuning](#hyper-parameters-tuning)
+    3. [Running the system](#running-the-system)
 4. [Acknowledgements](#acknowledgements)
 
 ***
