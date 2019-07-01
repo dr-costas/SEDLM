@@ -11,10 +11,8 @@ data_loader:
   batch_size: 8
   shuffle: Yes
   drop_last: Yes
-  dataset_root_dir: 'dataset'
+  root_dir: 'dataset'
   scene:  # Not used in the TUT SED Real Life 2017 dataset
-  normalized_features: Yes
-  tutsed_features: Yes
   data_fold:  # Is set dynamically in the experiments
   data_version: 2017
 #
@@ -33,7 +31,6 @@ sed_model:
   nb_labels: 6
   cnn_channels: 256
   cnn_dropout: .25
-  rnn_dropout: .25
 #
 # Settings for the teacher forcing
 tf:
