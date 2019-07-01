@@ -15,7 +15,7 @@ from data_feeders import get_tut_sed_data_loader
 
 __author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
-__all__ = ['training', 'testing']
+__all__ = ['training', 'testing', 'experiment']
 
 
 def _sed_epoch(model, data_loader, objective,
@@ -211,18 +211,19 @@ def training(model, data_loader_training, optimizer, objective, f1_func, er_func
         return model
 
 
-def experiment(settings, model):
+def experiment(settings, model_class):
     """Does the experiment with the specified settings and model.
 
     :param settings: The settings.
     :type settings: dict
-    :param model: The model.
-    :type model: torch.nn.Module
+    :param model_class: The class of the model.
+    :type model_class: callable
     """
     device = 'cuda' if cuda.is_available() else 'cpu'
-
     printing.inform_about_device(device)
-    printing.print_yaml_settings(settings)
+
+    with printing.InformAboutProcess('Creating the model'):
+        model = model_class(**settings['sed_model'])
 
     model = model.to(device)
 
