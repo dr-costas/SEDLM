@@ -264,8 +264,6 @@ def experiment(settings, model_class):
         len_2=len_2
     ), end='\n\n')
 
-    printing.print_modules_info(model)
-
     printing.print_msg('Starting training', start='\n\n-- ', end='\n\n')
 
     optimized_model = training(
