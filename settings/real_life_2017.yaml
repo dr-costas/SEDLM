@@ -5,6 +5,8 @@
 # author: Konstantinos Drossos,
 #         Tampere University
 # ---------------------------------------
+#
+# Settings for the data loading
 data_loader:
   batch_size: 8
   shuffle: Yes
@@ -15,19 +17,26 @@ data_loader:
   tutsed_features: Yes
   data_fold: 1
   data_version: 2017
+#
+# Settings for the optimizer
 optimizer:
   lr: !!float 1e-4
+#
+# Settings for the training process
 training:
   epochs: 200
   validation_patience: 50
   grad_norm: .5
+#
+# Settings for the SED model
 sed_model:
   nb_labels: 6
   cnn_channels: 256
   cnn_dropout: .25
   rnn_dropout: .25
+#
+# Settings for the teacher forcing
 tf:
-  apply_after_epochs: 0
   gamma_factor: 10
   mul_factor: 80
   min_prob: .05
