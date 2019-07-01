@@ -1,0 +1,30 @@
+data_loader:
+  batch_size: 8
+  shuffle: Yes
+  drop_last: Yes
+  dataset_root_dir: 'dataset'
+  scene:
+  normalized_features: Yes
+  tutsed_features: Yes
+  data_fold: 1
+  data_version: 2017
+optimizer:
+  lr: !!float 1e-4
+training:
+  epochs: 200
+  validation_patience: 50
+  grad_norm: .5
+sed_model:
+  nb_labels: 6
+  cnn_channels: 256
+  cnn_dropout: .25
+  rnn_dropout: .25
+tf:
+  apply_after_epochs: 0
+  gamma_factor: 10
+  mul_factor: 80
+  min_prob: .05
+  max_prob: .9
+  tf_to_rnn: Yes
+
+# EOF
