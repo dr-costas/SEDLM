@@ -3,15 +3,13 @@
 
 from contextlib import ContextDecorator
 from datetime import datetime
-from collections import namedtuple
 
 __author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
 __all__ = [
     'print_msg', 'inform_about_device', 'print_date_and_time',
-    'print_processes_message', 'InformAboutProcess', 'print_yaml_settings',
-    'print_training_results', 'print_evaluation_results', 'print_intro_messages',
-    'print_empty_lines', 'print_modules_info'
+    'InformAboutProcess', 'print_yaml_settings',
+    'print_training_results', 'print_evaluation_results'
 ]
 
 
@@ -19,18 +17,6 @@ _time_f_spec = '7.2'
 _acc_f_spec = '6.2'
 _loss_f_spec = '7.3'
 _epoch_f_spec = '4'
-
-
-def print_intro_messages(device):
-    """Prints initial messages.
-
-    :param device: The device to be used.
-    :type device: str
-    """
-    print_date_and_time()
-    print_msg(' ', start='')
-    inform_about_device(device)
-    print_msg(' ', start='')
 
 
 def print_msg(the_msg, start='-- ', end='\n', flush=True,
@@ -169,27 +155,6 @@ class InformAboutProcess(ContextDecorator):
         return False
 
 
-def print_empty_lines(nb_lines=1):
-    """Prints empty lines.
-
-    :param nb_lines: The amount of lines.
-    :type nb_lines: int
-    """
-    for _ in range(nb_lines):
-        print_msg('', start='', end='\n')
-
-
-def print_processes_message(workers):
-    """Prints a message for how many processes are used.
-
-    :param workers: The amount of processes.
-    :type workers: int
-    """
-    msg_str = '| Using {} {} |'.format('single' if workers is None else workers,
-                                       'processes' if workers > 1 else 'process')
-    print_msg('\n'.join(['', '*' * len(msg_str), msg_str, '*' * len(msg_str)]), flush=True)
-
-
 def print_training_results(epoch, training_loss, validation_loss,
                            training_f1, training_er,
                            validation_f1, validation_er,
@@ -245,98 +210,6 @@ def print_evaluation_results(f1_score, er_score, time_elapsed):
             acc_f_spec=_acc_f_spec, t_f_spec=_time_f_spec)
 
     print_msg(the_msg, start='  -- ')
-
-
-def print_modules_info(module, indent=2, start=''):
-    """Prints modules names, weights, and biases.
-
-    :param module: The module to use.
-    :type module: torch.nn.Module
-    :param indent: Amount of spaces to use as indentation.
-    :type indent: int
-    :param start: Starting decoration for the strings.
-    :type start: str
-    """
-    weights_str = ': weights: {digits_w:{fmt_spec_w}d} | ' \
-                  'biases: {digits_b:{fmt_spec_b}d}'
-
-    w_and_bs = get_weights_and_biases_of_module(module)
-
-    numel_weights, numel_biases = [], []
-
-    for entry in w_and_bs:
-        try:
-            numel_weights.append(entry.weights_and_biases[0].numel())
-            numel_biases.append(entry.weights_and_biases[1].numel())
-        except TypeError:
-            numel_weights.append(0)
-            numel_biases.append(0)
-        except AttributeError:
-            numel_weights.append(sum([i.numel() for i in entry.weights_and_biases[0]]))
-            numel_biases.append(sum([i.numel() for i in entry.weights_and_biases[1]]))
-
-    max_len_name = max([len(entry.module_name) + entry.ind_level * indent for entry in w_and_bs])
-    max_len_weights = max([len(str(w)) for w in numel_weights])
-    max_len_biases = max([len(str(b)) for b in numel_biases])
-
-    total_params = sum([sum([w, b]) for w, b in zip(numel_weights, numel_biases)])
-
-    [print_msg(
-        '{msg:{max_len}}{params}'.format(
-            msg=entry.module_name,
-            max_len=max_len_name - (entry.ind_level * indent),
-            params=weights_str.format(
-                fmt_spec_w=max_len_weights, fmt_spec_b=max_len_biases,
-                digits_w=numel_weights[e], digits_b=numel_biases[e]
-            ) if entry.weights_and_biases is not None else ''),
-        start='{}{}'.format(start, ''.join([' ' * indent] * entry.ind_level))
-    ) for e, entry in enumerate(w_and_bs)]
-    print_msg('Total parameters: {}'.format(total_params), start='\n')
-
-
-def get_weights_and_biases_of_module(module):
-    """Gets the weights and biases of the module.
-
-    :param module: The module.
-    :type module: torch.nn.Module
-    :return: A list of named tuples, each tuple having:
-               - The name of the module (module_name).
-               - Weights and biases or None `weights_biases`
-               - Indentation level (ind_level)
-    :rtype: list[collections.namedtuple]
-    """
-    Entry = namedtuple('Entry', ['module_name', 'weights_and_biases', 'ind_level'])
-
-    entries = []
-    modules_it = module.named_modules()
-
-    i, n = next(modules_it)
-    entries.append(Entry(
-        module_name=n._get_name(),
-        weights_and_biases=None,
-        ind_level=0))
-
-    for i, n in modules_it:
-        if len(list(n.modules())) > 1:
-            module_name = n._get_name()
-            weights_and_biases = None
-        else:
-            module_name = str(n)
-            try:
-                weights_and_biases = [n.weight, n.bias]
-            except AttributeError:
-                try:
-                    w = [getattr(n, w) for l in n._all_weights for w in l if w.startswith('weight')]
-                    b = [getattr(n, w) for l in n._all_weights for w in l if w.startswith('bias')]
-                    weights_and_biases = [w, b]
-                except AttributeError:
-                    weights_and_biases = None
-        entries.append(Entry(
-            module_name=module_name,
-            weights_and_biases=weights_and_biases,
-            ind_level=len(i.split('.'))))
-
-    return entries
 
 
 # EOF
