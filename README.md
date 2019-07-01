@@ -76,6 +76,8 @@ created after cloning this repository) and then issue the proper command at the 
 
 ### Hyper-parameters tuning 
 
+### Running the system
+
 
 ## Acknowledgements
 
