@@ -21,7 +21,7 @@ class TUTSEDRealLife2016(Dataset):
         """TUT SED Real Life 2016 dataset class.
 
         :param root_dir: The root directory for the dataset.
-        :type root_dir: pathlib.Path
+        :type root_dir: str
         :param split: The split for the dataset (e.g. training).
         :type split: str
         :param data_fold: The data fold.

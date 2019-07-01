@@ -19,7 +19,7 @@ class TUTSEDSynthetic2016(Dataset):
         """TUT SED Synthetic 2016 dataset class. 
         
         :param root_dir: The root directory for the dataset. 
-        :type root_dir: pathlib.Path
+        :type root_dir: str
         :param split: The split for the dataset (e.g. training).
         :type split: str
         :param norm_features: Get the normalized features?
