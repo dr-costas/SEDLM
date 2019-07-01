@@ -17,31 +17,31 @@ class TFCRNN(Module):
                  rnn_in_dim, rnn_out_dim, rnn_dropout,
                  nb_classes, batch_counter, gamma_factor,
                  mul_factor, min_prob, max_prob):
-        """The Sound Event Detection model with teacher forcing and\
+        """The Sound Event Detection (SED) model with teacher forcing and\
         scheduled sampling.
 
-        :param cnn_channels:
-        :type cnn_channels:
-        :param cnn_dropout:
-        :type cnn_dropout:
-        :param rnn_in_dim:
-        :type rnn_in_dim:
-        :param rnn_out_dim:
-        :type rnn_out_dim:
-        :param rnn_dropout:
-        :type rnn_dropout:
-        :param nb_classes:
-        :type nb_classes:
-        :param batch_counter:
-        :type batch_counter:
-        :param gamma_factor:
-        :type gamma_factor:
-        :param mul_factor:
-        :type mul_factor:
-        :param min_prob:
-        :type min_prob:
-        :param max_prob:
-        :type max_prob:
+        :param cnn_channels: The amount of CNN channels for the SED model.
+        :type cnn_channels: int
+        :param cnn_dropout: The dropout percentage for the CNNs dropout.
+        :type cnn_dropout: float
+        :param rnn_in_dim: The input dimensionality for the RNNs.
+        :type rnn_in_dim: int
+        :param rnn_out_dim: The output dimensionality for the RNNs.
+        :type rnn_out_dim: int
+        :param rnn_dropout: The dropout percentage for the RNN dropout.
+        :type rnn_dropout: float
+        :param nb_classes: The amount of output classes.
+        :type nb_classes: int
+        :param batch_counter: The amount of batches in one full epoch.
+        :type batch_counter: int
+        :param gamma_factor: The gamma factor for scheduled sampling.
+        :type gamma_factor: float
+        :param mul_factor: The multiplication factor for scheduled sampling.
+        :type mul_factor: float
+        :param min_prob: The minimum probability for selecting predictions.
+        :type min_prob: float
+        :param max_prob: The maximum probability for selecting predictions.
+        :type max_prob: float
         """
         super(TFCRNN, self).__init__()
 
