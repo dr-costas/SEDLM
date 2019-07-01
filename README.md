@@ -28,6 +28,10 @@ and setting up the project](#dependencies-pre-requisites-and-setting-up-the-proj
 
 ## Method introduction
 
+### Sound event detection
+
+### Teacher forcing and scheduled sampling
+
 ## Dependencies, pre-requisites, and setting up the project
 
 To start using our project, you have to: 
@@ -67,6 +71,10 @@ created after cloning this repository) and then issue the proper command at the 
 4. Now the project is set-up and you can use it with the data that you got from step 3. 
 
 ## Using SEDLM
+
+### Data set-up
+
+### Hyper-parameters tuning 
 
 
 ## Acknowledgements
