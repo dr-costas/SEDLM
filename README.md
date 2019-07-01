@@ -70,4 +70,12 @@ created after cloning this repository) and then issue the proper command at the 
 
 
 ## Acknowledgements
-  
+
+* Part of the computations leading to these results were performed on a TITAN-X GPU
+donated by [NVIDIA](https://www.nvidia.com/en-us/) to K. Drossos. 
+* The authors wish to acknowledge [CSC-IT Center for Science](https://www.csc.fi/), 
+Finland, for computational resources. 
+* The research leading to these results has received funding from the [European Research 
+Council](https://erc.europa.eu/) under the European Union’s H2020 Framework Programme 
+through ERC Grant Agreement 637422 EVERYSOUND. 
+* P. Magron is supported by the [Academy of Finland](http://www.aka.fi/en), project no. 290190.
