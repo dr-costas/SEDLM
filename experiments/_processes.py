@@ -138,78 +138,69 @@ def training(model, data_loader_training, optimizer, objective, f1_func, er_func
     :rtype: torch.nn.Module
     """
     best_model = None
+    epochs_waiting = 100
+    biggest_epoch_loss = 1e8
+    best_model_epoch = -1
 
-    try:
-        epochs_waiting = 100
-        biggest_epoch_loss = 1e8
-        best_model_epoch = -1
+    for epoch in range(epochs):
+        start_time = time()
 
-        for epoch in range(epochs):
-            start_time = time()
+        model.train(True)
+        model, epoch_tr_loss, true_training, hat_training = _sed_epoch(
+            model=model, data_loader=data_loader_training,
+            objective=objective, optimizer=optimizer,
+            device=device, grad_norm=grad_norm
+        )
 
-            model.train(True)
-            model, epoch_tr_loss, true_training, hat_training = _sed_epoch(
-                model=model, data_loader=data_loader_training,
-                objective=objective, optimizer=optimizer,
-                device=device, grad_norm=grad_norm
+        epoch_tr_loss = epoch_tr_loss.mean()
+
+        f1_score_training = f1_func(hat_training, true_training).mean()
+        error_rate_training = er_func(hat_training, true_training).mean()
+
+        model.eval()
+        with no_grad():
+            model, epoch_va_loss, true_validation, hat_validation = _sed_epoch(
+                model=model, data_loader=data_loader_validation,
+                objective=objective, optimizer=None,
+                device=device, is_testing=True
             )
 
-            epoch_tr_loss = epoch_tr_loss.mean()
+        epoch_va_loss = epoch_va_loss.mean()
 
-            f1_score_training = f1_func(hat_training, true_training).mean()
-            error_rate_training = er_func(hat_training, true_training).mean()
+        f1_score_validation = f1_func(hat_validation, true_validation).mean()
+        error_rate_validation = er_func(hat_validation, true_validation).mean()
 
-            model.eval()
-            with no_grad():
-                model, epoch_va_loss, true_validation, hat_validation = _sed_epoch(
-                    model=model, data_loader=data_loader_validation,
-                    objective=objective, optimizer=None,
-                    device=device, is_testing=True
-                )
+        if epoch_va_loss < biggest_epoch_loss:
+            biggest_epoch_loss = epoch_va_loss
+            epochs_waiting = 0
+            best_model = deepcopy(model.state_dict())
+            best_model_epoch = epoch
+        else:
+            epochs_waiting += 1
 
-            epoch_va_loss = epoch_va_loss.mean()
+        end_time = time() - start_time
 
-            f1_score_validation = f1_func(hat_validation, true_validation).mean()
-            error_rate_validation = er_func(hat_validation, true_validation).mean()
+        print_training_results(
+            epoch=epoch, training_loss=epoch_tr_loss,
+            validation_loss=epoch_va_loss,
+            training_f1=f1_score_training,
+            training_er=error_rate_training,
+            validation_f1=f1_score_validation,
+            validation_er=error_rate_validation,
+            time_elapsed=end_time
+        )
 
-            if epoch_va_loss < biggest_epoch_loss:
-                biggest_epoch_loss = epoch_va_loss
-                epochs_waiting = 0
-                best_model = deepcopy(model.state_dict())
-                best_model_epoch = epoch
-            else:
-                epochs_waiting += 1
+        if epochs_waiting >= validation_patience:
+            print_msg(
+                'Early stopping! Lowest validation loss: {:7.3f} at epoch: {:3d}'.format(
+                    biggest_epoch_loss, best_model_epoch
+                ), start='\n-- ', end='\n\n')
+            break
 
-            end_time = time() - start_time
+    if best_model is not None:
+        model.load_state_dict(best_model)
 
-            print_training_results(
-                epoch=epoch, training_loss=epoch_tr_loss,
-                validation_loss=epoch_va_loss,
-                training_f1=f1_score_training,
-                training_er=error_rate_training,
-                validation_f1=f1_score_validation,
-                validation_er=error_rate_validation,
-                time_elapsed=end_time
-            )
-
-            if epochs_waiting >= validation_patience:
-                print_msg(
-                    'Early stopping! Lowest validation loss: {:7.3f} at epoch: {:3d}'.format(
-                        biggest_epoch_loss, best_model_epoch
-                    ), start='\n-- ', end='\n\n')
-                break
-
-        if best_model is not None:
-            model.load_state_dict(best_model)
-
-        return model
-
-    except KeyboardInterrupt:
-        if best_model is not None:
-            model.load_state_dict(best_model)
-
-        print_msg('Keyboard stopping, proceeding to testing', start='\n\n-- ')
-        return model
+    return model
 
 
 def experiment(settings, model_class):
