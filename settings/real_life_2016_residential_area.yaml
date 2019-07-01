@@ -32,6 +32,7 @@ sed_model:
   nb_labels: 11
   cnn_channels: 256
   cnn_dropout: .25
+  rnn_dropout: .25
 #
 # Settings for the teacher forcing
 tf:

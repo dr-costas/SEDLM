@@ -1,7 +1,6 @@
 # ---------------------------------------
 # Settings for the experiments with the
-# TUT SED Real Life 2016 (home scene)
-# dataset.
+# TUT SED Real Life 2017 dataset.
 #
 # author: Konstantinos Drossos,
 #         Tampere University
@@ -13,9 +12,9 @@ data_loader:
   shuffle: Yes
   drop_last: Yes
   root_dir: 'dataset'
-  scene:  'home'
+  scene:  # Not used in the TUT SED Real Life 2017 dataset
   data_fold:  # Is set dynamically in the experiments
-  data_version: 2016
+  data_version: 'synthetic'
 #
 # Settings for the optimizer
 optimizer:
@@ -29,7 +28,7 @@ training:
 #
 # Settings for the SED model
 sed_model:
-  nb_labels: 11
+  nb_labels: 6
   cnn_channels: 256
   cnn_dropout: .25
   rnn_dropout: .25
@@ -37,7 +36,7 @@ sed_model:
 # Settings for the teacher forcing
 tf:
   gamma_factor: 10
-  mul_factor: 120
+  mul_factor: 80
   min_prob: .05
   max_prob: .9
 
