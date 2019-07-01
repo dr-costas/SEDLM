@@ -145,7 +145,7 @@ def training(model, data_loader_training, optimizer, objective, f1_func, er_func
     for epoch in range(epochs):
         start_time = time()
 
-        model.train(True)
+        model.train()
         model, epoch_tr_loss, true_training, hat_training = _sed_epoch(
             model=model, data_loader=data_loader_training,
             objective=objective, optimizer=optimizer,
@@ -230,15 +230,15 @@ def experiment(settings, model_class):
         optimizer = Adam(model.parameters(), lr=settings['optimizer']['lr'])
 
     if hasattr(model, 'scheduled_sampling'):
-        with InformAboutProcess('Setting the teacher forcing attributes', end='\n\n'):
+        with InformAboutProcess('Setting the teacher forcing attributes'):
             model.apply_after = settings['tf']['apply_after_epochs'] * len(training_data)
             model.gamma_factor = settings['tf']['gamma_factor']
             model.mul_factor = settings['tf']['mul_factor']
             model.min_prob = settings['tf']['min_prob']
             model.max_prob = settings['tf']['max_prob']
             model.batch_counter = len(training_data)
-    else:
-        print_msg('', start='')
+
+    print_msg('', start='')
 
     common_kwargs = {
         'f1_func': f1_per_frame,
@@ -246,20 +246,24 @@ def experiment(settings, model_class):
         'device': device
     }
 
-    len_2 = max([len('Training examples/batches'), len('Validation examples/batches')])
+    len_m = max([
+        len('Training examples/batches'),
+        len('Validation examples/batches'),
+        len('Testing examples/batches')
+    ])
 
-    print_msg('{m2:<{len_2}}: {d1:5d} /{d2:5d}'.format(
-        m2='Training examples/batches',
+    print_msg('{m:<{len_m}}: {d1:5d} /{d2:5d}'.format(
+        m='Training examples/batches',
         d1=len(training_data) * settings['data_loader']['batch_size'],
         d2=len(training_data),
-        len_2=len_2
+        len_m=len_m
     ))
 
-    print_msg('{m2:<{len_2}}: {d1:5d} /{d2:5d}'.format(
-        m2='Validation examples/batches',
+    print_msg('{m:<{len_m}}: {d1:5d} /{d2:5d}'.format(
+        m='Validation examples/batches',
         d1=len(validation_data) * settings['data_loader']['batch_size'],
         d2=len(validation_data),
-        len_2=len_2
+        len_m=len_m
     ), end='\n\n')
 
     print_msg('Starting training', start='\n\n-- ', end='\n\n')
@@ -275,17 +279,24 @@ def experiment(settings, model_class):
 
     del training_data
 
-    print_msg('Starting testing', start='\n\n-- ', end='\n\n')
-
     if settings['data_loader']['data_version'] == 'synthetic':
         del validation_data
+        print_msg('Using separate testing split.', start='\n\n-- ')
         with InformAboutProcess('Creating testing data loader'):
             testing_data = get_tut_sed_data_loader(
                 split='testing', **settings['data_loader'])
+
+        print_msg('{m:<{len_m}}: {d1:5d} /{d2:5d}'.format(
+            m='Testing examples/batches',
+            d1=len(testing_data) * settings['data_loader']['batch_size'],
+            d2=len(testing_data),
+            len_m=len_m
+        ))
     else:
         print_msg('Using X-fold setting.', start='\n\n-- ')
         testing_data = validation_data
 
+    print_msg('Starting testing', start='\n\n-- ', end='\n\n')
     testing(
         model=optimized_model, data_loader=testing_data,
         **common_kwargs
