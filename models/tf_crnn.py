@@ -17,7 +17,8 @@ class TFCRNN(Module):
                  rnn_in_dim, rnn_out_dim, rnn_dropout,
                  nb_classes, batch_counter, gamma_factor,
                  mul_factor, min_prob, max_prob):
-        """
+        """The Sound Event Detection model with teacher forcing and\
+        scheduled sampling.
 
         :param cnn_channels:
         :type cnn_channels:
