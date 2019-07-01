@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from torch.nn import Module, GRUCell, Linear
+from torch.nn import Module, GRUCell, Linear, Dropout
 from torch import zeros, Tensor, cat
 
 from modules import dnn
@@ -14,9 +14,9 @@ __all__ = ['TFCRNN']
 class TFCRNN(Module):
 
     def __init__(self, cnn_channels, cnn_dropout,
-                 rnn_in_dim, rnn_out_dim, nb_classes,
-                 batch_counter, gamma_factor, mul_factor,
-                 min_prob, max_prob):
+                 rnn_in_dim, rnn_out_dim, rnn_dropout,
+                 nb_classes, batch_counter, gamma_factor,
+                 mul_factor, min_prob, max_prob):
         """
 
         :param cnn_channels:
@@ -27,6 +27,8 @@ class TFCRNN(Module):
         :type rnn_in_dim:
         :param rnn_out_dim:
         :type rnn_out_dim:
+        :param rnn_dropout:
+        :type rnn_dropout:
         :param nb_classes:
         :type nb_classes:
         :param batch_counter:
@@ -54,6 +56,7 @@ class TFCRNN(Module):
         self.iteration = 0
 
         self.dnn = dnn.DNN(cnn_channels=cnn_channels, cnn_dropout=cnn_dropout)
+        self.rnn_dropout = Dropout(rnn_dropout)
         self.rnn = GRUCell(rnn_in_dim + self.nb_classes, self.rnn_hh_size, bias=True)
         self.classifier = Linear(self.rnn_hh_size, self.nb_classes, bias=True)
 
@@ -92,7 +95,7 @@ class TFCRNN(Module):
 
             prob = self.scheduled_sampling()
             flags.random_(0, 1001).div_(1000).lt_(prob)
-            tf_input = cat([features[:, t_step, :], tf], dim=-1)
+            tf_input = cat([self.rnn_dropout(features[:, t_step, :]), tf], dim=-1)
 
             h = self.rnn(tf_input, h)
 
