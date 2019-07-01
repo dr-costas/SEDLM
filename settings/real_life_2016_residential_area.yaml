@@ -1,0 +1,43 @@
+# ---------------------------------------
+# Settings for the experiments with the
+# TUT SED Real Life 2016 (residential
+# area scene) dataset.
+#
+# author: Konstantinos Drossos,
+#         Tampere University
+# ---------------------------------------
+#
+# Settings for the data loading
+data_loader:
+  batch_size: 8
+  shuffle: Yes
+  drop_last: Yes
+  root_dir: 'dataset'
+  scene:  'residential_area'
+  data_fold:  # Is set dynamically in the experiments
+  data_version: 2016
+#
+# Settings for the optimizer
+optimizer:
+  lr: !!float 1e-3
+#
+# Settings for the training process
+training:
+  epochs: 200
+  validation_patience: 50
+  grad_norm: -1
+#
+# Settings for the SED model
+sed_model:
+  nb_labels: 11
+  cnn_channels: 256
+  cnn_dropout: .25
+#
+# Settings for the teacher forcing
+tf:
+  gamma_factor: 10
+  mul_factor: 120
+  min_prob: .05
+  max_prob: .9
+
+# EOF
