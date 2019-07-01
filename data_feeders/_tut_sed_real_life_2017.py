@@ -16,30 +16,28 @@ __all__ = ['TUTSEDRealLife2017']
 class TUTSEDRealLife2017(Dataset):
     """TUT SED Real Life 2017.
     """
-    def __init__(self, dataset_root_dir, dataset_split, data_fold,
-                 normalized_features="True"):
+    def __init__(self, root_dir, split, data_fold, norm_features="True"):
         """TUT SED Real Life 2017 dataset class.
 
-        :param dataset_root_dir: The dataset root directory.
-        :type dataset_root_dir: pathlib.Path
-        :param dataset_split: The split that we want.
-        :type dataset_split: str
+        :param root_dir: The dataset root directory.
+        :type root_dir: pathlib.Path
+        :param split: The split that we want.
+        :type split: str
         :param data_fold: The data fold.
         :type data_fold: int
-        :param normalized_features: Get the normalized features?
-        :type normalized_features: bool
+        :param norm_features: Get the normalized features?
+        :type norm_features: bool
         """
         seq_len = 1024
 
-        the_split = 'train' if dataset_split == 'training' else 'test'
-        split_dir = 'dev'
+        the_split = 'train' if split == 'training' else 'test'
 
         data_path = Path().joinpath(
-            dataset_root_dir, 'real_life', '{}_{}'.format(
-                split_dir, 2017), 'fold{}'.format(data_fold))
+            root_dir, 'real_life', '{}_{}'.format(
+                'dev', 2017), 'fold{}'.format(data_fold))
 
         path_ending = '{}{}_features'.format(
-            the_split, '_normalized' if normalized_features else '')
+            the_split, '_normalized' if norm_features else '')
 
         all_data_paths = sorted([a_path for a_path in data_path.iterdir()
                                  if a_path.stem.endswith(path_ending)])
