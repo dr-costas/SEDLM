@@ -25,6 +25,5 @@ tf:
   mul_factor: 80
   min_prob: .05
   max_prob: .9
-  tf_to_rnn: Yes
 
 # EOF
