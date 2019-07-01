@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import pathlib
+from pathlib import Path
 
 from torch.utils.data import Dataset
 
@@ -29,7 +29,7 @@ class TUTSEDSynthetic2016(Dataset):
             raise AssertionError('Split `{}` not recognized. Use one of: {}'.format(
                 split, ', '.join(['training', 'validation', 'testing'])))
 
-        data_path = pathlib.Path().joinpath(root_dir, 'synthetic', split)
+        data_path = Path().joinpath(root_dir, 'synthetic', split)
         x_path = data_path.joinpath('features{norm}.npy'.format(
             norm='_normalized' if norm_features else ''))
 
