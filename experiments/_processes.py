@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pathlib import Path
 from time import time
 from copy import deepcopy
 
-from torch import no_grad, save, cat, zeros
+from torch import no_grad, cat, zeros
 from torch.optim import Adam
 from torch.nn import BCEWithLogitsLoss, utils
 from torch import cuda
@@ -277,17 +276,6 @@ def experiment(settings, model_class):
     )
 
     del training_data
-
-    output_states = Path(
-        'outputs', settings['output']['states_path'],
-        'model_{}_fold_{}.pt'.format(
-            settings['output']['model_name'],
-            settings['data_loader']['data_fold']
-        )
-    )
-    output_states.parent.mkdir(parents=True, exist_ok=True)
-
-    save(optimized_model.state_dict(), str(output_states))
 
     printing.print_msg('Starting testing', start='\n\n-- ', end='\n\n')
 
