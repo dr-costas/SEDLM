@@ -16,6 +16,7 @@ def get_argument_parser():
     """
     arg_parser = ArgumentParser()
     arg_parser.add_argument('--config-file', type=str, default='')
+    arg_parser.add_argument('--baseline', type=bool, default=False)
 
     return arg_parser
 
