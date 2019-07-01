@@ -5,9 +5,8 @@ from functools import partial
 
 from models.tf_crnn import TFCRNN
 from tools.printing import print_msg, print_date_and_time
+from tools.various import CheckAllNone, get_argument_parser
 from tools.file_io import load_settings_file
-from tools.argument_parsing import get_argument_parser
-from tools.various import CheckAllNone
 
 from ._processes import experiment
 
