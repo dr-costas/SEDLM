@@ -1,9 +1,16 @@
+# ---------------------------------------
+# Settings for the experiments with the
+# TUT SED Real Life 2017 dataset.
+#
+# author: Konstantinos Drossos,
+#         Tampere University
+# ---------------------------------------
 data_loader:
   batch_size: 8
   shuffle: Yes
   drop_last: Yes
   dataset_root_dir: 'dataset'
-  scene:
+  scene:  # Not used in the TUT SED Real Life 2017 dataset
   normalized_features: Yes
   tutsed_features: Yes
   data_fold: 1
