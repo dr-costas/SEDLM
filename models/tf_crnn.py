@@ -4,7 +4,7 @@
 from torch.nn import Module, GRUCell, Linear, Dropout
 from torch import zeros, Tensor, cat
 
-from modules import dnn
+from ._modules import dnn
 
 __author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'

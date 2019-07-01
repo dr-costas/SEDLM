@@ -5,7 +5,7 @@ from torch import zeros
 from torch.nn import Module, Sequential, GRUCell, \
     Linear, Dropout
 
-from modules import dnn
+from ._modules import dnn
 
 __author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
