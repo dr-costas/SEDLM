@@ -2,7 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import pathlib
+
 from torch.utils.data import Dataset
+
 from tools import file_io
 
 __author__ = 'Konstantinos Drossos -- Tampere University'
