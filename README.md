@@ -41,9 +41,8 @@ short time representations of audio. For example, given an audio feature vector 
 is extracted from 0.04 seconds, a SED method should identify the activities of different
 sound events in this vector. Usually, SED is applied over a sequence of short time audio representations and the
 identification of activities of sound events is performed for every input short time
-representation. That is, as an input is given a matrix X
-
-\begin{equation} \begin{bmatrix} x & \dot{x} & \theta & \dot{\theta} & L & m & M \end{bmatrix} \end{equation}
+representation. That is, as an input is given a matrix
+![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Cmathbf%7BX%7D%5Cin%5Cmathbb%7BR%7D%5E%7BT%5Ctimes%20F%7D)
 
 ### Teacher forcing and scheduled sampling
 
