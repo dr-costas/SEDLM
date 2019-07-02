@@ -91,8 +91,9 @@ class TFCRNN(Module):
         :rtype: torch.Tensor
         """
         b_size, t_steps, _ = x.size()
-        features = self.dnn(x).permute(0, 2, 1, 3).contiguous().view(
-            b_size, t_steps, self.dnn_output_features)
+        features = self.rnn_dropout(
+            self.dnn(x).permute(0, 2, 1, 3).contiguous().view(
+                b_size, t_steps, self.dnn_output_features))
 
         device = features.device
 
@@ -106,7 +107,7 @@ class TFCRNN(Module):
 
             prob = self.scheduled_sampling()
             flags.random_(0, 1001).div_(1000).lt_(prob)
-            tf_input = cat([self.rnn_dropout(features[:, t_step, :]), tf], dim=-1)
+            tf_input = cat([features[:, t_step, :], tf], dim=-1)
 
             h = self.rnn(tf_input, h)
 
