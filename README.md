@@ -46,18 +46,18 @@ To start using our project, you have to:
 Probably using other Python 3.X versions will be OK, but please have in mind that this code
 is for Python 3.6. 
 
-2. Set-up the dependencies using either the ``pip`` ([pip_requirements.txt](pip_requirements.txt))
-or ``conda`` ([conda_requirements.txt](conda_requirements.txt)) files. 
+2. Set-up the dependencies using either the ``pip`` ([pip_requirements.txt](requirements/pip_requirements.txt))
+or ``conda`` ([conda_requirements.txt](requirements/conda_requirements.txt)) files. 
 Navigate with your terminal inside the root directory of the project (i.e. the directory that is
 created after cloning this repository) and then issue the proper command at the terminal: 
 
     1. **pip**: To set-up the dependencies with `pip` use: 
         ```bash
-        $ pip install -r pip_requirements.txt
+        $ pip install -r requirements/pip_requirements.txt
         ```
     2. **conda**: To set-up the dependencies with `conda`, you can issue the command
         ```bash
-        $ conda install --yes --file conda_requirements.txt
+        $ conda install --yes --file requirements/conda_requirements.txt
         ```
 
 3. Download the audio data. You can download the three audio datasets from: 
