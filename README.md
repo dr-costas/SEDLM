@@ -36,6 +36,15 @@ and setting up the project](#dependencies-pre-requisites-and-setting-up-the-proj
 
 ### Sound event detection
 
+Sound event detection (SED) is the task of identifying activities of sound events from
+short time representations of audio. For example, given an audio feature vector that
+is extracted from 0.04 seconds, a SED method should identify the activities of different
+sound events in this vector. Usually, SED is applied over a sequence of short time audio representations and the
+identification of activities of sound events is performed for every input short time
+representation. That is, as an input is given a matrix X
+
+\begin{equation} \begin{bmatrix} x & \dot{x} & \theta & \dot{\theta} & L & m & M \end{bmatrix} \end{equation}
+
 ### Teacher forcing and scheduled sampling
 
 ## Dependencies, pre-requisites, and setting up the project
