@@ -50,8 +50,7 @@ class TFCRNN(Module):
         self.nb_classes = nb_classes
 
         self.batch_counter = batch_counter
-        self.gamma_factor = gamma_factor
-        self.mul_factor = mul_factor
+        self.gamma_factor = gamma_factor/mul_factor
         self._min_prob = 1 - min_prob
         self.max_prob = max_prob
         self.iteration = 0
@@ -133,7 +132,7 @@ class TFCRNN(Module):
                  selecting predictions.
         :rtype: torch.Tensor
         """
-        p = self.iteration/(self.batch_counter * self.mul_factor)
+        p = self.iteration/self.batch_counter
         d = Tensor([-self.gamma_factor * p]).exp().item()
         return min(self.max_prob, 1 - min(self.min_prob, (2 / (1 + d)) - 1))
 
