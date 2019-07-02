@@ -39,12 +39,27 @@ and setting up the project](#dependencies-pre-requisites-and-setting-up-the-proj
 Sound event detection (SED) is the task of identifying activities of sound events from
 short time representations of audio. For example, given an audio feature vector that
 is extracted from 0.04 seconds, a SED method should identify the activities of different
-sound events in this vector. Usually, SED is applied over a sequence of short time audio representations and the
-identification of activities of sound events is performed for every input short time
-representation. That is, as an input is given a matrix
-![equation](https://latex.codecogs.com/gif.latex?%5Cinline%20%5Cmathbf%7BX%7D%5Cin%5Cmathbb%7BR%7D%5E%7BT%5Ctimes%20F%7D)
+sound events in this vector. Usually, SED is applied over a sequence of short time audio 
+feature vectors and the identification of activities of sound events is performed for 
+every input feature vector. That is, as an input is given a matrix
+![equation](https://latex.codecogs.com/gif.latex?\inline&space;\mathbf{X}\in\mathbb{R}^{T\times&space;F}),
+with `T` and `F` to be the amount of feature vectors and features, respectively, the output is the matrix
+![equation](https://latex.codecogs.com/gif.latex?\inline&space;\hat{\mathbf{Y}}\in\mathbb{R}^{T\times&space;C}),
+which holds the predictions for each of the `C` classes at every `t` feature vector.
 
+Sound events in real life exhibit inter and intra temporal structures. That is, a car passing by
+is very likely to be active for couple of time steps and also to follow or precede a car horn. Such
+temporal structures are employed and used in other machine learning tasks, for example in machine 
+translation, image captioning, and speech recognition. In these tasks, the developed method also learns
+a model of the temporal associations of the targeted classes. These associations usually are termed
+as language model. 
+
+SED methods can benefit from a language model. The method in this repository is about exactly this. 
+A method to take advantage of language model for SED. 
+ 
 ### Teacher forcing and scheduled sampling
+
+
 
 ## Dependencies, pre-requisites, and setting up the project
 
