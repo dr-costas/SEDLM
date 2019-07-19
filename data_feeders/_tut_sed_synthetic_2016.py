@@ -15,25 +15,23 @@ __all__ = ['TUTSEDSynthetic2016']
 class TUTSEDSynthetic2016(Dataset):
     """TUT SED Synthetic 2016 dataset
     """
-    def __init__(self, root_dir, split, norm_features="True"):
+    def __init__(self, root_dir, split, input_features_file_name,
+                 target_values_input_name):
         """TUT SED Synthetic 2016 dataset class. 
         
         :param root_dir: The root directory for the dataset. 
         :type root_dir: str
         :param split: The split for the dataset (e.g. training).
         :type split: str
-        :param norm_features: Get the normalized features?
-        :type norm_features: bool
+        :param input_features_file_name: Input features file name.
+        :type input_features_file_name: str
+        :param target_values_input_name: Target values file name.
+        :type target_values_input_name: str
         """
-        if split not in ['training', 'validation', 'testing']:
-            raise AssertionError('Split `{}` not recognized. Use one of: {}'.format(
-                split, ', '.join(['training', 'validation', 'testing'])))
-
         data_path = Path().joinpath(root_dir, 'synthetic', split)
-        x_path = data_path.joinpath('features{norm}.npy'.format(
-            norm='_normalized' if norm_features else ''))
 
-        y_path = data_path.joinpath('target_values.npy')
+        x_path = data_path.joinpath(input_features_file_name)
+        y_path = data_path.joinpath(target_values_input_name)
 
         self.x = file_io.load_numpy_object(x_path)
         self.y = file_io.load_numpy_object(y_path)
