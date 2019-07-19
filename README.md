@@ -60,7 +60,7 @@ A method to take advantage of language model for SED.
  
 ### Teacher forcing and scheduled sampling
 
-In order to take advantage of the above mentioned temporal structures, we use the *teacher forcing* technique.
+In order to take advantage of the above mentioned temporal structures, we use the *teacher forcing* [1] technique.
 Teacher forcing is the conditioning of the input to an RNN with the activities of sound events at the previous time
 step. That is, 
 
@@ -81,10 +81,18 @@ If as ![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}) a
 classifier, then the RNN will have a difficult time to learn any dependencies of the sound events, because during
 training (and especially at the beginning of the training process) it will be fed incorrect class activities. 
 
-To tackle both of the above, we employ the scheduled sampling technique. That is, at the beginning of the training
+To tackle both of the above, we employ the scheduled sampling technique [2]. That is, at the beginning of the training
 we use as ![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}) the ground truth values. As
 the training proceeds and the classifier learns to predict more and more correct class activities, we gradually
-employ the predictions of the classifier as ![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}). 
+employ the predictions of the classifier as ![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}).
+
+[1] R. J. Williams and D. Zipser, “A learning algorithm for continually running fully recurrent neural networks,”
+Neural Computation, vol. 1, no. 2, pp. 270–280, June 1989.
+
+[2] S. Bengio, O. Vinyals, N. Jaitly, and N. Shazeer, “Scheduled sampling for sequence prediction with recurrent
+neural networks,” in Proceedings of the 28th International Conference on Neural Information Processing Systems, 
+Volume 1, ser. NIPS’15. Cambridge, MA, USA:MIT Press, 2015, pp. 1171–1179. Online. 
+Available: http://dl.acm.org/citation.cfm?id=2969239.2969370
 
 ## Dependencies, pre-requisites, and setting up the project
 
