@@ -6,6 +6,8 @@
 #         Tampere University
 # ---------------------------------------
 #
+global:
+  has_folds: Yes
 # Settings for the data loading
 data_loader:
   batch_size: 8
@@ -15,10 +17,12 @@ data_loader:
   scene:  # Not used in the TUT SED Real Life 2017 dataset
   data_fold:  # Is set dynamically in the experiments
   data_version: 2017
+  input_features_file_name: 'input_features.p'
+  target_values_input_name: 'target_values.p'
 #
 # Settings for the optimizer
 optimizer:
-  lr: !!float 1e-4
+  lr: !!float 5e-4
 #
 # Settings for the training process
 training:
@@ -32,11 +36,13 @@ sed_model:
   cnn_channels: 256
   cnn_dropout: .25
   rnn_dropout: .25
+  rnn_in_dim: 256
+  rnn_out_dim: 256
 #
 # Settings for the teacher forcing
 tf:
   gamma_factor: 10
-  mul_factor: 80
+  mul_factor: 120
   min_prob: .05
   max_prob: .9
 

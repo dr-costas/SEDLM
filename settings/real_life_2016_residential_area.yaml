@@ -7,6 +7,8 @@
 #         Tampere University
 # ---------------------------------------
 #
+global:
+  has_folds: Yes
 # Settings for the data loading
 data_loader:
   batch_size: 8
@@ -16,6 +18,8 @@ data_loader:
   scene:  'residential_area'
   data_fold:  # Is set dynamically in the experiments
   data_version: 2016
+  input_features_file_name: 'input_features.p'
+  target_values_input_name: 'target_values.p'
 #
 # Settings for the optimizer
 optimizer:
@@ -33,6 +37,8 @@ sed_model:
   cnn_channels: 256
   cnn_dropout: .25
   rnn_dropout: .25
+  rnn_in_dim: 256
+  rnn_out_dim: 256
 #
 # Settings for the teacher forcing
 tf:
