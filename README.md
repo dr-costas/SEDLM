@@ -47,9 +47,10 @@ with `T` and `F` to be the amount of feature vectors and features, respectively,
 ![equation](https://latex.codecogs.com/gif.latex?\inline&space;\hat{\mathbf{Y}}\in\mathbb{R}^{T\times&space;C}),
 which holds the predictions for each of the `C` classes at every `t` feature vector.
 
-Sound events in real life exhibit inter and intra temporal structures. That is, a car passing by
-is very likely to be active for couple of time steps and also to follow or precede a car horn. Such
-temporal structures are employed and used in other machine learning tasks, for example in machine 
+In real-life recordings, the various sound events likely have **temporal structures within and across events**. 
+For instance, a “footsteps” event might be repeated with pauses in between (intra-event structure). On the
+other hand, “car horn” is likely to follow or precede the “car passing by” sound event (inter-events structure). 
+Such temporal structures are employed and used in other machine learning tasks, for example in machine 
 translation, image captioning, and speech recognition. In these tasks, the developed method also learns
 a model of the temporal associations of the targeted classes. These associations usually are termed
 as language model. 
@@ -59,7 +60,31 @@ A method to take advantage of language model for SED.
  
 ### Teacher forcing and scheduled sampling
 
+In order to take advantage of the above mentioned temporal structures, we use the *teacher forcing* technique.
+Teacher forcing is the conditioning of the input to an RNN with the activities of sound events at the previous time
+step. That is, 
 
+![equation](https://latex.codecogs.com/gif.latex?h'_{t}=RNN(h'_{t-1},h_{t},y'_{t-1}))
+
+where ![equation](https://latex.codecogs.com/gif.latex?\inline&space;h'_{t}) is the output of the RNN at time-step *t*,
+![equation](https://latex.codecogs.com/gif.latex?\inline&space;h_{t}) is the input to the RNN (from a previous layer)
+and at time-step *t*, and 
+![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}) is the activities of the sound events at
+the time-step *t-1*. 
+
+If as ![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}) are used the ground truth values, 
+then the RNN will not be robust to cases where the
+![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}) is not a correct class activity. For example,
+in the testing process where there are no ground truth values. 
+
+If as ![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}) are used the predictions of the
+classifier, then the RNN will have a difficult time to learn any dependencies of the sound events, because during
+training (and especially at the beginning of the training process) it will be fed incorrect class activities. 
+
+To tackle both of the above, we employ the scheduled sampling technique. That is, at the beginning of the training
+we use as ![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}) the ground truth values. As
+the training proceeds and the classifier learns to predict more and more correct class activities, we gradually
+employ the predictions of the classifier as ![equation](https://latex.codecogs.com/gif.latex?\inline&space;y'_{t-1}). 
 
 ## Dependencies, pre-requisites, and setting up the project
 
