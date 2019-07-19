@@ -125,9 +125,98 @@ created after cloning this repository) and then issue the proper command at the 
 4. Now the project is set-up and you can use it with the data that you got from step 3. 
 
 ## Using SEDLM
+You can use SEDLM directly for your data, or you can check the code and adopt the SEDLM to your SED task, or repeat
+the process described in our paper.
+
+SEDLM code is based on [PyTorch](https://pytorch.org/), version 1.1.0.
+
+In the current form, different variables of the code are specified in a YAML file, holding all the settings for the
+code. All the YAML files are in the `settings` directory, and the YAML loading function searches in the `settings`
+directory for YAML files. In general, you can just alter the values of settings in the YAML file and then run the
+code.
 
 ### Data set-up
 
+The data have to be in the `data` directory. 
+
+If you want to use the existing data loaders, then you have to have your data organized in 
+a specific way. First of all, you have to have different files for input features and target
+values. For example, `input_features.npy` and `target_values.npy`. Then, depending on the 
+dataset that you will use, you have to have your data in different directories. That is: 
+
+  1. TUTSED Synthetic 2016.
+   
+      The data have to be in a directory called `synthetic`, in the `data` directory. That is, 
+      `data/synthetic`. Then, the files for the training, validation, and testing data have to
+      be in a different directory. That is:
+       
+        - `data/synthetic/training`   
+        - `data/synthetic/validation`   
+        - `data/synthetic/testing`   
+      
+      You have to have different **numpy files** for the input features and the target values.
+      You can specify the name of each of the input or target files in the YAML settings file.
+      For example, the training files should be like:
+       
+        - `data/synthetic/training/input_features.npy`
+        - `data/synthetic/training/target_values.npy`
+        
+      The code will load the numpy files and use them for training the SEDLM method. You can to make 
+      sure though that the input features and target values are properly ordered. That is, the 
+      first element in the input features corresponds to the first element in the target values. 
+       
+  2. TUT Real Life 2016
+   
+      The data have to be in a directory called `real_life_2016`, in the `data` directory. That is, 
+      `data/real_life_2016`. Then, the files for each of the folds have to be in a different 
+      directory. That is:
+       
+        - `data/real_life_2016/fold_1`   
+        - `data/real_life_2016/fold_2`   
+        - `data/real_life_2016/fold_3`   
+        - `data/real_life_2016/fold_4`   
+      
+      You have to have different **pickle files** for the input features and the target values.
+      Since there are multiple files per scene and per fold, you cannot have all features in 
+      a numpy array. Thus, you have to have all the data in a list and serialize (i.e. store to
+      disk) that list using the pickle package. 
+      
+      You can specify the name of each of the input or target files in the YAML settings file.
+      For example, the files for fold 1 should be like:
+       
+        - `data/real_life_2016/fold_1/input_features.pkl`
+        - `data/real_life_2016/fold_1/target_values.pkl`
+        
+      The code will load the pickle files and use them for training the SEDLM method. You can to make 
+      sure though that the input features and target values are properly ordered. That is, the 
+      first element in the input features corresponds to the first element in the target values. 
+      
+  3. TUT Real Life 2017
+   
+      The data have to be in a directory called `real_life_2017`, in the `data` directory. That is, 
+      `data/real_life_2017`. Then, the files for each of the folds have to be in a different 
+      directory. That is:
+       
+        - `data/real_life_2017/fold_1`   
+        - `data/real_life_2017/fold_2`   
+        - `data/real_life_2017/fold_3`   
+        - `data/real_life_2017/fold_4`   
+      
+      You have to have different **pickle files** for the input features and the target values.
+      Since there are multiple files per fold, you cannot have all features in 
+      a numpy array. Thus, you have to have all the data in a list and serialize (i.e. store to
+      disk) that list using the pickle package. 
+      
+      You can specify the name of each of the input or target files in the YAML settings file.
+      For example, the files for fold 1 should be like:
+       
+        - `data/real_life_2017/fold_1/input_features.pkl`
+        - `data/real_life_2017/fold_1/target_values.pkl`
+        
+      The code will load the pickle files and use them for training the SEDLM method. You can to make 
+      sure though that the input features and target values are properly ordered. That is, the 
+      first element in the input features corresponds to the first element in the target values.
+ 
 ### Hyper-parameters tuning 
 
 ### Running the system
