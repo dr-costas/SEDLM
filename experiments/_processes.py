@@ -236,11 +236,15 @@ def experiment(settings, model_class, use_tf):
 
     with InformAboutProcess('Creating training data loader'):
         training_data = get_tut_sed_data_loader(
-            split='training', **settings['data_loader'])
+            split='training', **settings['data_loader'],
+            is_test=False
+        )
 
     with InformAboutProcess('Creating validation data loader'):
         validation_data = get_tut_sed_data_loader(
-            split='validation', **settings['data_loader'])
+            split='validation', **settings['data_loader'],
+            is_test=True
+        )
 
     with InformAboutProcess('Creating optimizer'):
         optimizer = Adam(model.parameters(), lr=settings['optimizer']['lr'])

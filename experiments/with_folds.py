@@ -38,7 +38,7 @@ def do_process(settings_path=None, settings=None, use_tf=False):
     print_msg('Starting experiment with folds', end='\n\n')
     p_print = partial(print_msg, decorate_prv='*', decorate_nxt='*', end='\n\n')
 
-    for i in range(4):
+    for i in range(2, 4):
         settings['data_loader'].update({'data_fold': i + 1})
         p_print('Fold {}'.format(i + 1))
         experiment(settings, model, use_tf=use_tf)
