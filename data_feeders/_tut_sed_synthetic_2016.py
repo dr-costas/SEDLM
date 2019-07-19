@@ -16,7 +16,7 @@ class TUTSEDSynthetic2016(Dataset):
     """TUT SED Synthetic 2016 dataset
     """
     def __init__(self, root_dir, split, input_features_file_name,
-                 target_values_input_name):
+                 target_values_input_name, is_test):
         """TUT SED Synthetic 2016 dataset class. 
         
         :param root_dir: The root directory for the dataset. 

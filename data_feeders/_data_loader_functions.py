@@ -14,8 +14,8 @@ __all__ = ['get_tut_sed_data_loader']
 
 def get_tut_sed_data_loader(root_dir, split, data_version, batch_size,
                             shuffle, drop_last, input_features_file_name,
-                            target_values_input_name,
-                            data_fold=None, scene=None):
+                            target_values_input_name, data_fold=None,
+                            scene=None, is_test=False):
     """Creates and returns the data loader.
 
     :param root_dir: The root dir for the dataset.
@@ -40,6 +40,8 @@ def get_tut_sed_data_loader(root_dir, split, data_version, batch_size,
     :type data_fold: int
     :param scene: Which scene?
     :type scene: str
+    :param is_test: We want the testing split for folds case?
+    :type is_test: bool
     :return: The TUT BREACNNModel data loader.
     :rtype: torch.utils.data.DataLoader
     """
@@ -53,7 +55,10 @@ def get_tut_sed_data_loader(root_dir, split, data_version, batch_size,
         common_kwargs.update({'split': split})
         dataset = TUTSEDSynthetic2016(**common_kwargs)
     else:
-        common_kwargs.update({'data_fold': data_fold})
+        common_kwargs.update({
+            'data_fold': data_fold,
+            'is_test': is_test
+        })
 
         if data_version == 2016:
             common_kwargs.update({'scene': scene})

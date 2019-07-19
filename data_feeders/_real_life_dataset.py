@@ -18,7 +18,7 @@ class SEDRealLife(Dataset):
     """
     def __init__(self, root_dir, data_dir, data_fold, scene,
                  input_features_file_name, target_values_input_name,
-                 seq_len):
+                 seq_len, is_test):
         """Base class for real life datasets.
 
         :param root_dir: The root directory for the dataset.
@@ -35,26 +35,34 @@ class SEDRealLife(Dataset):
         :type target_values_input_name: str
         :param seq_len: Amount of feature vectors in one sequence.
         :type seq_len: int
+        :param is_test: Want the test split?
+        :type is_test: bool
         """
         super(SEDRealLife, self).__init__()
 
         data_path = Path(root_dir, data_dir, scene,
                          'fold_{}'.format(data_fold))
 
-        x_path = data_path.joinpath(input_features_file_name)
-        y_path = data_path.joinpath(target_values_input_name)
+        f_prefix = 'test' if is_test else 'train'
+
+        x_path = data_path.joinpath('{}_{}'.format(f_prefix, input_features_file_name))
+        y_path = data_path.joinpath('{}_{}'.format(f_prefix, target_values_input_name))
 
         self.x = file_io.load_pickle_file(x_path)
         self.y = file_io.load_pickle_file(y_path)
 
-        nb_sequences, red = divmod(self.x.shape[0], seq_len)
+        for i in range(len(self.x)):
+            _, red = divmod(self.x[i].shape[0], seq_len)
 
-        self.x = np.concatenate([
-            self.x, np.zeros((seq_len - red, self.x.shape[-1]))
-        ]).reshape((-1, seq_len, self.x.shape[-1]))
-        self.y = np.concatenate([
-            self.y, np.zeros((seq_len - red, self.y.shape[-1]))
-        ]).reshape((-1, seq_len, self.y.shape[-1]))
+            self.x[i] = np.concatenate([
+                np.zeros((seq_len - red, self.x[i].shape[-1])), self.x[i]
+            ]).reshape((-1, seq_len, self.x[i].shape[-1]))
+            self.y[i] = np.concatenate([
+                np.zeros((seq_len - red, self.y[i].shape[-1])), self.y[i]
+            ]).reshape((-1, seq_len, self.y[i].shape[-1]))
+
+        self.x = np.concatenate(self.x)
+        self.y = np.concatenate(self.y)
 
     def __len__(self):
         """The amount of examples in the dataset.
