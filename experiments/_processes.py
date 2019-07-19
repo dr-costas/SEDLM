@@ -21,7 +21,8 @@ __all__ = ['training', 'testing', 'experiment']
 
 
 def _sed_epoch(model, data_loader, objective,
-               optimizer, device, is_testing=False, grad_norm=1.):
+               optimizer, device, is_testing=False,
+               use_tf=True, grad_norm=1.):
     """Performs a forward pass for the BREACNNModel model.
 
     :param model: The BREACNNModel model.
@@ -34,6 +35,10 @@ def _sed_epoch(model, data_loader, objective,
     :type optimizer: torch.optim.Optimizer | None
     :param device: The device to be used.
     :type device: str
+    :param is_testing: Is it a testing pass?
+    :type is_testing: bool
+    :param use_tf: Do we use teacher forcing?
+    :type use_tf: bool
     :param grad_norm: The maximum gradient norm.
     :type grad_norm: float
     :return: The model and the values for the objective and evaluation of a full\
@@ -52,7 +57,7 @@ def _sed_epoch(model, data_loader, objective,
         x = data[0].float().to(device)
         y = data[1].float().to(device)
 
-        y_hat = model(x, y if not is_testing else None)
+        y_hat = model(x, y if not is_testing else None) if use_tf else model(x)
 
         if objective is not None:
             loss = objective(y_hat, y)
@@ -75,7 +80,7 @@ def _sed_epoch(model, data_loader, objective,
     return model, epoch_objective_values, values_true, values_hat
 
 
-def testing(model, data_loader, f1_func, er_func, device):
+def testing(model, data_loader, f1_func, er_func, device, use_tf):
     """Tests a model.
 
     :param model: The model to be tested.
@@ -88,6 +93,8 @@ def testing(model, data_loader, f1_func, er_func, device):
     :type er_func: callable
     :param device: The device to be used.
     :type device: str
+    :param use_tf: Do we use teacher forcing?
+    :type use_tf: bool
     """
     start_time = time()
     model.eval()
@@ -95,7 +102,8 @@ def testing(model, data_loader, f1_func, er_func, device):
         _, _, true_values, hat_values = _sed_epoch(
             model=model, data_loader=data_loader,
             objective=None, optimizer=None,
-            device=device, is_testing=True
+            device=device, use_tf=use_tf,
+            is_testing=True
         )
     end_time = time() - start_time
 
@@ -106,7 +114,8 @@ def testing(model, data_loader, f1_func, er_func, device):
 
 
 def training(model, data_loader_training, optimizer, objective, f1_func, er_func,
-             epochs, data_loader_validation, validation_patience, device, grad_norm):
+             epochs, data_loader_validation, validation_patience, device, grad_norm,
+             use_tf=True):
     """Optimizes an BREACNNModel model.
 
     :param model: The BREACNNModel model.
@@ -134,6 +143,8 @@ def training(model, data_loader_training, optimizer, objective, f1_func, er_func
     :type device: str
     :param grad_norm: The maximum gradient norm.
     :type grad_norm: float
+    :param use_tf: Do we use teacher forcing?
+    :type use_tf: bool
     :return: The optimized model.
     :rtype: torch.nn.Module
     """
@@ -149,7 +160,7 @@ def training(model, data_loader_training, optimizer, objective, f1_func, er_func
         model, epoch_tr_loss, true_training, hat_training = _sed_epoch(
             model=model, data_loader=data_loader_training,
             objective=objective, optimizer=optimizer,
-            device=device, grad_norm=grad_norm
+            device=device, use_tf=use_tf, grad_norm=grad_norm
         )
 
         epoch_tr_loss = epoch_tr_loss.mean()
@@ -162,7 +173,7 @@ def training(model, data_loader_training, optimizer, objective, f1_func, er_func
             model, epoch_va_loss, true_validation, hat_validation = _sed_epoch(
                 model=model, data_loader=data_loader_validation,
                 objective=objective, optimizer=None,
-                device=device, is_testing=True
+                device=device, use_tf=use_tf, is_testing=True
             )
 
         epoch_va_loss = epoch_va_loss.mean()
@@ -203,19 +214,24 @@ def training(model, data_loader_training, optimizer, objective, f1_func, er_func
     return model
 
 
-def experiment(settings, model_class):
+def experiment(settings, model_class, use_tf):
     """Does the experiment with the specified settings and model.
 
     :param settings: The settings.
     :type settings: dict
     :param model_class: The class of the model.
     :type model_class: callable
+    :param use_tf: Do we use teacher forcing?
+    :type use_tf: bool
     """
     device = 'cuda' if is_available() else 'cpu'
     inform_about_device(device)
 
     with InformAboutProcess('Creating the model'):
-        model = model_class(**settings['sed_model'])
+        model_settings = settings['sed_model']
+        if use_tf:
+            model_settings.update(settings['tf'])
+        model = model_class(**model_settings)
         model = model.to(device)
 
     with InformAboutProcess('Creating training data loader'):
@@ -229,13 +245,8 @@ def experiment(settings, model_class):
     with InformAboutProcess('Creating optimizer'):
         optimizer = Adam(model.parameters(), lr=settings['optimizer']['lr'])
 
-    if hasattr(model, 'scheduled_sampling'):
-        with InformAboutProcess('Setting the teacher forcing attributes'):
-            model.apply_after = settings['tf']['apply_after_epochs'] * len(training_data)
-            model.gamma_factor = settings['tf']['gamma_factor']
-            model.mul_factor = settings['tf']['mul_factor']
-            model.min_prob = settings['tf']['min_prob']
-            model.max_prob = settings['tf']['max_prob']
+    if use_tf:
+        with InformAboutProcess('Setting the teacher forcing batch counter'):
             model.batch_counter = len(training_data)
 
     print_msg('', start='')
@@ -243,7 +254,8 @@ def experiment(settings, model_class):
     common_kwargs = {
         'f1_func': f1_per_frame,
         'er_func': error_rate_per_frame,
-        'device': device
+        'device': device,
+        'use_tf': use_tf
     }
 
     len_m = max([

@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from torch.nn import Module, GRUCell, Linear, Dropout
+from torch.nn import Module, Sequential, GRUCell, Linear, Dropout
 from torch import zeros, Tensor, cat
 
 from ._modules import dnn
@@ -15,8 +15,8 @@ class TFCRNN(Module):
 
     def __init__(self, cnn_channels, cnn_dropout,
                  rnn_in_dim, rnn_out_dim, rnn_dropout,
-                 nb_classes, batch_counter, gamma_factor,
-                 mul_factor, min_prob, max_prob):
+                 nb_classes, gamma_factor, mul_factor,
+                 min_prob, max_prob):
         """The Sound Event Detection (SED) model with teacher forcing and\
         scheduled sampling.
 
@@ -32,8 +32,6 @@ class TFCRNN(Module):
         :type rnn_dropout: float
         :param nb_classes: The amount of output classes.
         :type nb_classes: int
-        :param batch_counter: The amount of batches in one full epoch.
-        :type batch_counter: int
         :param gamma_factor: The gamma factor for scheduled sampling.
         :type gamma_factor: float
         :param mul_factor: The multiplication factor for scheduled sampling.
@@ -49,14 +47,16 @@ class TFCRNN(Module):
         self.rnn_hh_size = rnn_out_dim
         self.nb_classes = nb_classes
 
-        self.batch_counter = batch_counter
+        self.batch_counter = 0
         self.gamma_factor = gamma_factor/mul_factor
         self._min_prob = 1 - min_prob
         self.max_prob = max_prob
         self.iteration = 0
 
-        self.dnn = dnn.DNN(cnn_channels=cnn_channels, cnn_dropout=cnn_dropout)
-        self.rnn_dropout = Dropout(rnn_dropout)
+        self.dnn = Sequential(
+            dnn.DNN(cnn_channels=cnn_channels, cnn_dropout=cnn_dropout),
+            Dropout(rnn_dropout)
+        )
         self.rnn = GRUCell(rnn_in_dim + self.nb_classes, self.rnn_hh_size, bias=True)
         self.classifier = Linear(self.rnn_hh_size, self.nb_classes, bias=True)
 
@@ -91,14 +91,13 @@ class TFCRNN(Module):
         :rtype: torch.Tensor
         """
         b_size, t_steps, _ = x.size()
-        features = self.rnn_dropout(
-            self.dnn(x).permute(0, 2, 1, 3).contiguous().view(
-                b_size, t_steps, self.dnn_output_features))
+        features = self.dnn(x).permute(0, 2, 1, 3).contiguous().view(
+            b_size, t_steps, self.dnn_output_features)
 
         device = features.device
 
-        h = zeros(self.rnn_hh_size).to(device)
-        tf = zeros(b_size, self.output_size).to(device)
+        h = zeros(b_size, self.rnn_hh_size).to(device)
+        tf = zeros(b_size, self.nb_classes).to(device)
         flags = zeros(b_size).to(device)
 
         outputs = zeros(b_size, t_steps, self.nb_classes).to(device)

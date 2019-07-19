@@ -37,11 +37,11 @@ class CRNN(Module):
         self.rnn_hh_size = rnn_out_dim
         self.nb_classes = nb_classes
 
-        self.dnn = dnn.DNN(cnn_channels=cnn_channels, cnn_dropout=cnn_dropout)
-        self.rnn = Sequential(
-            Dropout(rnn_dropout),
-            GRUCell(rnn_in_dim, self.rnn_hh_size, bias=True)
+        self.dnn = Sequential(
+            dnn.DNN(cnn_channels=cnn_channels, cnn_dropout=cnn_dropout),
+            Dropout(rnn_dropout)
         )
+        self.rnn = GRUCell(rnn_in_dim, self.rnn_hh_size, bias=True)
         self.classifier = Linear(self.rnn_hh_size, self.nb_classes, bias=True)
 
     def forward(self, x):
@@ -56,7 +56,7 @@ class CRNN(Module):
         features = self.dnn(x).permute(0, 2, 1, 3).contiguous()
         features = features.view(b_size, t_steps, self.dnn_output_features)
 
-        h = zeros(self.rnn_hh_size).to(x.device)
+        h = zeros(b_size, self.rnn_hh_size).to(x.device)
         outputs = zeros(b_size, t_steps, self.nb_classes).to(features.device)
 
         for t_step in range(t_steps):
