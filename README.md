@@ -189,16 +189,28 @@ dataset that you will use, you have to have your data in different directories. 
         - `data/real_life_2016/fold_3`   
         - `data/real_life_2016/fold_4`   
       
-      You have to have different **pickle files** for the input features and the target values.
-      Since there are multiple files per scene and per fold, you cannot have all features in 
-      a numpy array. Thus, you have to have all the data in a list and serialize (i.e. store to
-      disk) that list using the pickle package. 
+      You have to have different **pickle files** for the input features and the target values, 
+      and for the training and testing of each fold. Since there are multiple files per scene
+      and per fold, you cannot have all features in a numpy array. Thus, you have to have all
+      the data in a list and serialize (i.e. store to disk) that list using the pickle package.
+      Also, there are files for training and testing in each fold.  
+      
+      For convenience, SEDLM uses automatically a pre-fix for the file names. That is, it 
+      automatically adds "train" and "test" to the specified file name.  
       
       You can specify the name of each of the input or target files in the YAML settings file.
-      For example, the files for fold 1 should be like:
+      For example, the files should be like:
        
-        - `data/real_life_2016/fold_1/input_features.pkl`
-        - `data/real_life_2016/fold_1/target_values.pkl`
+        - `input_features.p`
+        - `target_values.p`
+        
+      Then, SEDLM code will search for the proper files and for each fold. For example, for fold 1
+      and home scene, the following files will be sought:
+       
+        - `data/real_life_2016/home/fold_1/train_input_features.p`
+        - `data/real_life_2016/home/fold_1/train_target_values.p`
+        - `data/real_life_2016/home/fold_1/test_input_features.p`
+        - `data/real_life_2016/home/fold_1/test_target_values.p`
         
       The code will load the pickle files and use them for training the SEDLM method. You can to make 
       sure though that the input features and target values are properly ordered. That is, the 
@@ -215,21 +227,33 @@ dataset that you will use, you have to have your data in different directories. 
         - `data/real_life_2017/fold_3`   
         - `data/real_life_2017/fold_4`   
       
-      You have to have different **pickle files** for the input features and the target values.
-      Since there are multiple files per fold, you cannot have all features in 
-      a numpy array. Thus, you have to have all the data in a list and serialize (i.e. store to
-      disk) that list using the pickle package. 
-      
+      You have to have different **pickle files** for the input features and the target values, 
+      and for the training and testing of each fold. Since there are multiple files per fold, 
+      you cannot have all features in a numpy array. Thus, you have to have all
+      the data in a list and serialize (i.e. store to disk) that list using the pickle package.
+      Also, there are files for training and testing in each fold.  
+    
+      For convenience, SEDLM uses automatically a pre-fix for the file names. That is, it 
+      automatically adds "train" and "test" to the specified file name.  
+    
       You can specify the name of each of the input or target files in the YAML settings file.
-      For example, the files for fold 1 should be like:
-       
-        - `data/real_life_2017/fold_1/input_features.pkl`
-        - `data/real_life_2017/fold_1/target_values.pkl`
-        
+      For example, the files should be like:
+     
+        - `input_features.p`
+        - `target_values.p`
+      
+      Then, SEDLM code will search for the proper files and for each fold. For example, for fold 1,
+      the following files will be sought:
+     
+        - `data/real_life_2016/fold_1/train_input_features.p`
+        - `data/real_life_2016/fold_1/train_target_values.p`
+        - `data/real_life_2016/fold_1/test_input_features.p`
+        - `data/real_life_2016/fold_1/test_target_values.p`
+      
       The code will load the pickle files and use them for training the SEDLM method. You can to make 
       sure though that the input features and target values are properly ordered. That is, the 
       first element in the input features corresponds to the first element in the target values.
- 
+       
 ### Hyper-parameters tuning
 
 The hyper-parameters can be tuned from the YAML settings files. Available hyper-parameters for tuning are: 
