@@ -26,7 +26,7 @@ optimizer:
 #
 # Settings for the training process
 training:
-  epochs: 2
+  epochs: 300
   validation_patience: 50
   grad_norm: .5
 #
