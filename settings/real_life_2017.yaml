@@ -28,7 +28,7 @@ training:
 #
 # Settings for the SED model
 sed_model:
-  nb_labels: 6
+  nb_classes: 6
   cnn_channels: 256
   cnn_dropout: .25
   rnn_dropout: .25
