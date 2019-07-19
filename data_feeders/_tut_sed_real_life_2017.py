@@ -1,65 +1,36 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from pathlib import Path
-
-from torch.utils.data import Dataset
-import numpy as np
-
-from tools import file_io
+from ._real_life_dataset import SEDRealLife
 
 __author__ = 'Konstantinos Drossos -- Tampere University'
 __docformat__ = 'reStructuredText'
 __all__ = ['TUTSEDRealLife2017']
 
 
-class TUTSEDRealLife2017(Dataset):
+class TUTSEDRealLife2017(SEDRealLife):
     """TUT SED Real Life 2017.
     """
-    def __init__(self, root_dir, split, data_fold, norm_features="True"):
+    def __init__(self, root_dir, data_fold, input_features_file_name,
+                 target_values_input_name):
         """TUT SED Real Life 2017 dataset class.
 
         :param root_dir: The root directory for the dataset.
         :type root_dir: str
-        :param split: The split for the dataset (e.g. training).
-        :type split: str
         :param data_fold: The data fold.
         :type data_fold: int
-        :param norm_features: Get the normalized features?
-        :type norm_features: bool
+        :param input_features_file_name: Input features file name.
+        :type input_features_file_name: str
+        :param target_values_input_name: Target values file name.
+        :type target_values_input_name: str
         """
-        seq_len = 1024
-
-        the_split = 'train' if split == 'training' else 'test'
-
-        data_path = Path().joinpath(
-            root_dir, 'real_life', '{}_{}'.format(
-                'dev', 2017), 'fold{}'.format(data_fold))
-
-        path_ending = '{}{}_features'.format(
-            the_split, '_normalized' if norm_features else '')
-
-        all_data_paths = sorted([a_path for a_path in data_path.iterdir()
-                                 if a_path.stem.endswith(path_ending)])
-
-        all_data = [file_io.load_pickle_file(str(i)) for i in all_data_paths]
-
-        self.x = np.concatenate([f for i in all_data for f in i['features']])
-        self.y = np.concatenate([l for i in all_data for l in i['labels']])
-
-        nb_sequences, red = divmod(self.x.shape[0], seq_len)
-
-        self.x = np.concatenate([
-            self.x, np.zeros((seq_len - red, self.x.shape[-1]))
-        ]).reshape((-1, seq_len, self.x.shape[-1]))
-        self.y = np.concatenate([
-            self.y, np.zeros((seq_len - red, self.y.shape[-1]))
-        ]).reshape((-1, seq_len, self.y.shape[-1]))
-
-    def __len__(self):
-        return len(self.x)
-
-    def __getitem__(self, item):
-        return self.x[item], self.y[item]
+        super(TUTSEDRealLife2017, self).__init__(
+            root_dir=root_dir, data_dir='real_life_2017',
+            data_fold=data_fold,
+            scene='',
+            input_features_file_name=input_features_file_name,
+            target_values_input_name=target_values_input_name,
+            seq_len=1024
+        )
 
 # EOF
