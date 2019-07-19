@@ -113,14 +113,19 @@ created after cloning this repository) and then issue the proper command at the 
    1. TUT-SED Synthetic 2016 dataset is available
    from [here](http://www.cs.tut.fi/sgn/arg/taslp2017-crnn-sed/index).
    
-      Download the audio files (i.e. the Audio 1/5, Audio 2/5, ..., Audio 5/5)
-      and place them at the ### directory. 
+      Download the audio files (i.e. the Audio 1/5, Audio 2/5, ..., Audio 5/5),
+      do your feature extraction and follow the instructions at the
+      [Data Set-up](#data-set-up) section. 
       
    2. The TUT Sound Events 2016 is available from [here](https://zenodo.org/record/45759#.XRYTYHUzZGo).
    
-      Download the audio files and place them in the ### directory. 
+      Download the audio files, do your feature extraction and follow the instructions
+      at the [Data Set-up](#data-set-up) section. 
       
-   3. The 
+   3. The TUT Sound Event 2017 is available from [here](https://zenodo.org/record/814831#.XTGbsnUzZGo)
+   
+      Download the audio files, do your feature extraction and follow the instructions
+      at the [Data Set-up](#data-set-up) section.
 
 4. Now the project is set-up and you can use it with the data that you got from step 3. 
 
@@ -217,9 +222,22 @@ dataset that you will use, you have to have your data in different directories. 
       sure though that the input features and target values are properly ordered. That is, the 
       first element in the input features corresponds to the first element in the target values.
  
-### Hyper-parameters tuning 
+### Hyper-parameters tuning
+
+The hyper-parameters can be tuned from the YAML settings files. Available hyper-parameters for tuning are: 
+
+  1. Amount of CNN channels
+  2. Dropout for CNNs and RNN
+  3. Scheduled sampling parameters
+  4. Learning rate of Adam optimizer
+  5. Batch size 
 
 ### Running the system
+
+You can run the system using a bash script. An example of such script are the files: 
+
+  1. `example_bash_script_baseline.sh`, which runs the baseline configuration for the SEDLM
+  2. `example_bash_script_tf.sh`, which runs the SEDLM with the TUT Real Life 2017 dataset. 
 
 
 ## Acknowledgements
