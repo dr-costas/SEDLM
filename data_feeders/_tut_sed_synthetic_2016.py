@@ -28,7 +28,8 @@ class TUTSEDSynthetic2016(Dataset):
         :param target_values_input_name: Target values file name.
         :type target_values_input_name: str
         """
-        data_path = Path().joinpath(root_dir, 'synthetic', split)
+        super(TUTSEDSynthetic2016, self).__init__()
+        data_path = Path(root_dir, 'synthetic', split)
 
         x_path = data_path.joinpath(input_features_file_name)
         y_path = data_path.joinpath(target_values_input_name)
