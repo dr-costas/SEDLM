@@ -245,10 +245,10 @@ dataset that you will use, you have to have your data in different directories. 
       Then, SEDLM code will search for the proper files and for each fold. For example, for fold 1,
       the following files will be sought:
      
-        - `data/real_life_2016/fold_1/train_input_features.p`
-        - `data/real_life_2016/fold_1/train_target_values.p`
-        - `data/real_life_2016/fold_1/test_input_features.p`
-        - `data/real_life_2016/fold_1/test_target_values.p`
+        - `data/real_life_2017/fold_1/train_input_features.p`
+        - `data/real_life_2017/fold_1/train_target_values.p`
+        - `data/real_life_2017/fold_1/test_input_features.p`
+        - `data/real_life_2017/fold_1/test_target_values.p`
       
       The code will load the pickle files and use them for training the SEDLM method. You can to make 
       sure though that the input features and target values are properly ordered. That is, the 
