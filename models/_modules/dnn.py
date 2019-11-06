@@ -15,7 +15,6 @@ class DNN(nn.Module):
         super(DNN, self).__init__()
 
         layer_1 = nn.Sequential(
-            nn.Dropout2d(cnn_dropout),
             nn.Conv2d(
                 in_channels=1, out_channels=cnn_channels,
                 kernel_size=5, stride=1, padding=2
