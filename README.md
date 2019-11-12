@@ -10,12 +10,14 @@ S. Gharib,
 and 
 [T. Virtanen](http://www.cs.tut.fi/~tuomasv/). 
 
-Our paper is submitted to the 
+Our paper is presented to the 
 [Detection and Classification of Acoustic Scenes and
 Events (DCASE) Workshop 2019](http://dcase.community/workshop2019/index). 
 You can find an online version of our paper at arXiv: [https://arxiv.org/abs/1907.08506](https://arxiv.org/abs/1907.08506)
 
 **If you use our method, please cite our paper.**  
+
+**You can get the version of the code used in the paper from** [![DOI](https://zenodo.org/badge/194117423.svg)](https://zenodo.org/badge/latestdoi/194117423)
 
 ## Table of Contents
 
