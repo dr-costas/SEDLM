@@ -32,9 +32,9 @@ def get_tut_sed_data_loader(root_dir, split, data_version, batch_size,
     :type shuffle: bool
     :param drop_last: Drop last examples?
     :type drop_last: bool
-    :param input_features_file_name: Input features file name.
+    :param input_features_file_name: Input features directory name.
     :type input_features_file_name: str
-    :param target_values_input_name: Target values file name.
+    :param target_values_input_name: Target values directory name.
     :type target_values_input_name: str
     :param data_fold: Which fold?
     :type data_fold: int
