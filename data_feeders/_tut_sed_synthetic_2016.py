@@ -23,9 +23,9 @@ class TUTSEDSynthetic2016(Dataset):
         :type root_dir: str
         :param split: The split for the dataset (e.g. training).
         :type split: str
-        :param input_features_file_name: Input features directory name.
+        :param input_features_file_name: Input features file name.
         :type input_features_file_name: str
-        :param target_values_input_name: Target values directory name.
+        :param target_values_input_name: Target values file name.
         :type target_values_input_name: str
         """
         super(TUTSEDSynthetic2016, self).__init__()
