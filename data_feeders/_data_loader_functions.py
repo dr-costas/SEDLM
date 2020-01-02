@@ -48,17 +48,14 @@ def get_tut_sed_data_loader(root_dir, split, data_version, batch_size,
     common_kwargs = {
         'root_dir': root_dir,
         'input_features_file_name': input_features_file_name,
-        'target_values_input_name': target_values_input_name
-    }
+        'target_values_input_name': target_values_input_name,
+        'is_test': is_test}
 
     if data_version == 'synthetic':
         common_kwargs.update({'split': split})
         dataset = TUTSEDSynthetic2016(**common_kwargs)
     else:
-        common_kwargs.update({
-            'data_fold': data_fold,
-            'is_test': is_test
-        })
+        common_kwargs.update({'data_fold': data_fold})
 
         if data_version == 2016:
             common_kwargs.update({'scene': scene})
